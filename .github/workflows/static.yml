@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#18213D">
+<title>MY STORY — Your world, in words</title>
+<style>
+:root {
+  --site-primary: #6849B8;
+  --site-secondary: #192442;
+  --site-background: #F6F4FB;
+  --site-on-primary: #FFFFFF;
+  --site-on-secondary: #FFFFFF;
+  --site-on-background: #242033;
+  --site-font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --site-font-heading: Georgia, "Times New Roman", serif;
+  --site-heading-scale: 1;
+  --site-spacing-scale: 1;
+  --site-radius-scale: 1;
+  --site-decoration-opacity: 1;
+  --bg: light-dark(var(--site-background), #101321);
+  --surface: light-dark(#FFFFFF, #191E2F);
+  --surface-2: light-dark(#F0EDF8, #222840);
+  --surface-3: light-dark(#E7E1F2, #2B3150);
+  --text: light-dark(#242033, #F3F0FA);
+  --muted: light-dark(#777287, #A7A9BC);
+  --line: light-dark(#E7E2EF, #303650);
+  --accent: var(--site-primary);
+  --accent-soft: light-dark(#EFE9FA, #332A50);
+  --navy: var(--site-secondary);
+  --success: light-dark(#28795C, #71C7A0);
+  --danger: light-dark(#B4495C, #F08A9A);
+  --shadow: 0 16px 42px rgba(27, 21, 54, .09);
+  --radius: calc(20px * var(--site-radius-scale));
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--site-font-body); }
+button, input, textarea, select { font: inherit; }
+button { cursor: pointer; }
+button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 40%, transparent); outline-offset: 2px; }
+#app { min-height: 100vh; width: 100%; border-radius: 0; background-color: light-dark(var(--site-background), #101321); color: var(--text); overflow: clip; }
+.topbar { height: 76px; display:flex; align-items:center; gap:calc(24px * var(--site-spacing-scale)); padding: 0 calc(34px * var(--site-spacing-scale)); background:var(--surface); border-bottom:1px solid var(--line); position:sticky; top:0; z-index:20; }
+.brand { display:flex; align-items:center; gap:11px; min-width:220px; border:0; background:none; color:var(--text); padding:0; }
+.brand-mark { width:38px; height:38px; border-radius:13px; display:grid; place-items:center; color:#fff; background:linear-gradient(145deg,#9474E4,#5D3EA9); box-shadow:0 7px 15px #6849B833; }
+.brand-mark svg { width:21px; height:21px; }
+.brand-name { font-weight:850; letter-spacing:.12em; font-size:14px; }
+.brand-tagline { color:var(--muted); font-size:10px; letter-spacing:.08em; margin-top:2px; }
+.top-search { flex:1; max-width:520px; position:relative; }
+.top-search input { width:100%; border:1px solid var(--line); background:var(--surface-2); color:var(--text); border-radius:999px; height:42px; padding:0 18px 0 43px; outline:none; }
+.top-search .search-icon { position:absolute; top:11px; left:15px; color:var(--muted); }
+.top-actions { margin-left:auto; display:flex; gap:12px; align-items:center; }
+.icon-button { width:40px; height:40px; border:1px solid var(--line); border-radius:50%; background:var(--surface); color:var(--text); display:grid; place-items:center; }
+.icon-button:hover { background:var(--surface-2); }
+.avatar { width:36px; height:36px; border-radius:50%; background:linear-gradient(145deg,#D6C8F5,#9272D4); display:grid; place-items:center; color:#3D286B; font-weight:800; overflow:hidden; flex:none; }
+.avatar img { width:100%; height:100%; object-fit:cover; }
+.layout { display:grid; grid-template-columns:248px minmax(0,1fr); max-width:1600px; margin:auto; min-height:calc(100vh - 76px); }
+.sidebar { padding:calc(28px * var(--site-spacing-scale)) calc(18px * var(--site-spacing-scale)); border-right:1px solid var(--line); background:var(--surface); display:flex; flex-direction:column; gap:24px; }
+.nav-label { font-size:10px; color:var(--muted); letter-spacing:.16em; font-weight:800; padding:0 13px 8px; }
+.nav-list { display:grid; gap:5px; }
+.nav-item { display:flex; align-items:center; gap:13px; width:100%; border:0; background:transparent; color:var(--muted); padding:12px 13px; text-align:left; border-radius:13px; font-size:13px; font-weight:650; }
+.nav-item svg { width:18px; height:18px; }
+.nav-item:hover { background:var(--surface-2); color:var(--text); }
+.nav-item.active { color:var(--accent); background:var(--accent-soft); }
+.sidebar-spacer { flex:1; }
+.sidebar-note { padding:17px; border-radius:17px; color:#fff; background:linear-gradient(145deg,#302655,var(--navy)); position:relative; overflow:hidden; }
+.sidebar-note:after { content:"✦"; position:absolute; font-size:70px; opacity:.12; right:7px; top:-15px; }
+.sidebar-note strong { font: bold 17px var(--site-font-heading); display:block; margin-bottom:6px; }
+.sidebar-note p { color:#D1CBE5; font-size:11px; line-height:1.5; margin:0; }
+.sidebar-user { padding:12px 10px 2px; border-top:1px solid var(--line); display:flex; align-items:center; gap:10px; min-width:0; }
+.sidebar-user .user-meta { min-width:0; flex:1; }
+.sidebar-user strong { display:block; font-size:12px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.sidebar-user span { display:block; color:var(--muted); font-size:10px; margin-top:3px; }
+.main { padding:calc(32px * var(--site-spacing-scale)) clamp(18px,4vw,56px) calc(70px * var(--site-spacing-scale)); min-width:0; }
+.content-wrap { max-width:1180px; margin:0 auto; }
+.eyebrow { color:var(--accent); font-size:10px; font-weight:850; letter-spacing:.18em; text-transform:uppercase; }
+h1,h2,h3,h4,p { margin-top:0; }
+h1,h2,h3 { font-family:var(--site-font-heading); font-weight:600; }
+h1 { font-size:calc(clamp(31px,4vw,48px) * var(--site-heading-scale)); letter-spacing:-.035em; line-height:1.12; }
+h2 { font-size:calc(27px * var(--site-heading-scale)); letter-spacing:-.02em; }
+h3 { font-size:calc(21px * var(--site-heading-scale)); }
+.muted { color:var(--muted); }
+.small { font-size:12px; }
+.btn { border:0; border-radius:999px; padding:11px 18px; font-weight:750; font-size:12px; display:inline-flex; align-items:center; justify-content:center; gap:8px; transition:.18s ease; }
+.btn-primary { color:#fff; background:var(--accent); box-shadow:0 7px 16px #6849B82b; }
+.btn-primary:hover { filter:brightness(1.08); transform:translateY(-1px); }
+.btn-dark { background:var(--navy); color:#fff; }
+.btn-soft { color:var(--accent); background:var(--accent-soft); }
+.btn-ghost { background:transparent; color:var(--muted); border:1px solid var(--line); }
+.btn-danger { background:color-mix(in srgb,var(--danger) 13%,var(--surface)); color:var(--danger); }
+.btn:disabled { opacity:.45; cursor:not-allowed; transform:none; }
+.hero { min-height:300px; border-radius:26px; background:linear-gradient(112deg,var(--navy) 0%,#302756 54%,var(--accent) 115%); color:#fff; padding:calc(42px * var(--site-spacing-scale)) calc(44px * var(--site-spacing-scale)); display:grid; grid-template-columns:1.25fr .75fr; gap:20px; overflow:hidden; position:relative; box-shadow:var(--shadow); }
+.hero:before,.hero:after { content:""; position:absolute; border:1px solid #ffffff18; border-radius:50%; width:330px; height:330px; right:4%; top:-100px; opacity:var(--site-decoration-opacity); }
+.hero:after { width:220px; height:220px; right:12%; top:-45px; }
+.hero-copy { max-width:560px; position:relative; z-index:1; align-self:center; }
+.hero .eyebrow { color:#CFC0F4; }
+.hero h1 { margin:13px 0 12px; font-size:clamp(36px,4.1vw,55px); }
+.hero p { color:#D8D4E9; font-size:13px; line-height:1.8; max-width:440px; margin-bottom:22px; }
+.hero .btn-primary { background:#fff; color:#46317F; box-shadow:none; }
+.hero-art { position:relative; min-height:210px; display:flex; align-items:center; justify-content:center; opacity:var(--site-decoration-opacity); }
+.book-orbit { width:208px; height:208px; border:1px solid #ffffff45; border-radius:50%; position:relative; transform:rotate(-13deg); }
+.book-orbit:before { content:""; position:absolute; width:143px; height:178px; top:15px; left:34px; border-radius:9px 16px 16px 9px; background:linear-gradient(140deg,#C8B5F1,#765BB9 58%,#3D316D); box-shadow:17px 15px 35px #090d245e; transform:rotate(15deg); border-left:7px solid #E8DFFB; }
+.book-orbit:after { content:"✦"; position:absolute; top:65px; left:92px; font-size:46px; color:#F3E8C6; text-shadow:0 0 18px #fff8; transform:rotate(15deg); }
+.orbit-dot { position:absolute; width:11px;height:11px;border-radius:50%;background:#F2DFA9; box-shadow:0 0 16px #F2DFA988; }
+.orbit-dot.one { top:11px; left:33px; }.orbit-dot.two { right:8px; bottom:41px; width:7px;height:7px; }
+.section-head { display:flex; align-items:end; justify-content:space-between; gap:16px; margin:36px 0 18px; }
+.section-head h2 { margin:5px 0 0; }
+.text-link { color:var(--accent); background:none; border:0; font-size:12px; font-weight:800; padding:8px; }
+.story-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:18px; }
+.story-card { min-width:0; cursor:pointer; }
+.cover { aspect-ratio: .78; min-height:155px; border-radius:15px; position:relative; overflow:hidden; box-shadow:0 8px 20px #16102d1b; background:linear-gradient(145deg,#30265d,#9d7fcf); }
+.cover:before { content:""; position:absolute; width:145px;height:145px; border:1px solid #ffffff44; border-radius:50%; right:-32px;top:-25px; }
+.cover:after { content:""; position:absolute; width:95px;height:95px; border:1px solid #ffffff35; border-radius:50%; right:0;top:0; }
+.cover .cover-glow { position:absolute; width:110px;height:110px;border-radius:50%; background:#ffffff26; filter:blur(1px); left:-30px;bottom:-25px; }
+.cover .cover-title { position:absolute; z-index:1; left:18px; right:15px; bottom:20px; color:white; font:600 21px/1.12 var(--site-font-heading); text-shadow:0 2px 10px #17102980; }
+.cover .cover-kicker { position:absolute; z-index:1; left:18px; bottom:11px; color:#ffffffbd; font-size:8px; letter-spacing:.2em; text-transform:uppercase; }
+.cover img { width:100%; height:100%; object-fit:cover; position:absolute; inset:0; }
+.story-card h3 { font:700 14px/1.35 var(--site-font-body); margin:11px 0 5px; letter-spacing:0; }
+.story-card .byline { color:var(--muted); font-size:10px; margin-bottom:8px; }
+.story-meta { display:flex; flex-wrap:wrap; gap:9px; color:var(--muted); font-size:10px; }
+.pill { display:inline-flex; align-items:center; border-radius:999px; padding:5px 9px; background:var(--surface-2); color:var(--muted); font-size:9px; font-weight:750; }
+.pill.accent { color:var(--accent); background:var(--accent-soft); }
+.recent-row { display:grid; grid-template-columns:64px minmax(0,1fr) auto; align-items:center; gap:14px; background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:11px; margin-bottom:9px; cursor:pointer; }
+.mini-cover { width:64px;height:73px;border-radius:10px; background:linear-gradient(145deg,#55417C,#B49BDD); position:relative; overflow:hidden; }
+.mini-cover img { width:100%;height:100%;object-fit:cover; }
+.recent-row h3 { font:700 13px var(--site-font-body); margin:0 0 5px; }
+.recent-row p { color:var(--muted); font-size:10px; margin:0; }
+.page-title { display:flex; justify-content:space-between; align-items:end; gap:16px; margin-bottom:24px; }
+.page-title h1 { margin:7px 0 8px; }
+.toolbar { display:flex; flex-wrap:wrap; gap:9px; align-items:center; margin-bottom:22px; }
+.field, .select-field, .textarea { width:100%; border:1px solid var(--line); background:var(--surface); color:var(--text); border-radius:12px; padding:12px 14px; outline:none; }
+.field::placeholder,.textarea::placeholder { color:var(--muted); }
+.select-field { width:auto; min-width:135px; }
+.textarea { min-height:130px; resize:vertical; line-height:1.65; }
+.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.form-group { display:flex; flex-direction:column; gap:7px; min-width:0; }
+.form-group.full { grid-column:1/-1; }
+.form-group label { font-size:11px; font-weight:800; color:var(--muted); }
+.form-help { color:var(--muted); font-size:10px; line-height:1.5; }
+.panel { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:22px; }
+.empty { text-align:center; border:1px dashed var(--line); border-radius:18px; padding:36px 20px; color:var(--muted); }
+.empty .empty-icon { font-size:30px; margin-bottom:10px; }
+.detail-head { display:grid; grid-template-columns:230px 1fr; gap:30px; align-items:center; margin-bottom:27px; }
+.detail-cover { aspect-ratio:.78; border-radius:20px; overflow:hidden; position:relative; box-shadow:var(--shadow); background:linear-gradient(145deg,#27294F,#9274C9); }
+.detail-cover .cover-title { font-size:27px; }
+.detail-copy h1 { margin:8px 0 10px; }
+.detail-copy .description { color:var(--muted); font-size:13px; line-height:1.8; max-width:700px; white-space:pre-wrap; }
+.detail-stats { display:flex; flex-wrap:wrap; gap:18px; color:var(--muted); font-size:11px; margin:18px 0; }
+.tag-row { display:flex; flex-wrap:wrap; gap:6px; }
+.chapter-list { display:grid; gap:8px; }
+.chapter-item { display:flex; align-items:center; gap:14px; padding:14px; border:1px solid var(--line); border-radius:13px; background:var(--surface); cursor:pointer; }
+.chapter-item:hover { background:var(--surface-2); }
+.chapter-number { width:36px;height:36px;border-radius:11px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-weight:800;font-size:11px; }
+.chapter-item .chapter-info { min-width:0; flex:1; }
+.chapter-item strong { display:block; font-size:12px; }
+.chapter-item small { color:var(--muted); display:block; margin-top:4px; font-size:10px; }
+.reader-shell { max-width:790px; margin:0 auto; }
+.reader-top { display:flex; justify-content:space-between; gap:12px; align-items:center; border-bottom:1px solid var(--line); padding-bottom:16px; margin-bottom:30px; }
+.reader-tools { display:flex; gap:6px; align-items:center; }
+.reader-tools button { border:1px solid var(--line); background:var(--surface); color:var(--text); border-radius:9px; height:34px; min-width:34px; }
+.reader-paper { background:var(--surface); border:1px solid var(--line); border-radius:20px; padding:clamp(24px,5vw,58px); box-shadow:var(--shadow); }
+.reader-paper h1 { font-size:32px; margin:9px 0 8px; }
+.reader-body { font-family:Georgia,"Times New Roman",serif; line-height:1.95; white-space:pre-wrap; margin-top:30px; font-size:19px; color:var(--text); overflow-wrap:anywhere; }
+.reader-nav { display:flex; justify-content:space-between; gap:12px; margin:22px 0 35px; }
+.comment { padding:16px 0; border-bottom:1px solid var(--line); }
+.comment:last-child { border-bottom:0; }
+.comment-head { display:flex; align-items:center; gap:9px; }
+.comment-head strong { font-size:11px; }
+.comment-head time { color:var(--muted); font-size:9px; }
+.comment-text { font-size:12px; line-height:1.65; white-space:pre-wrap; margin:10px 0; }
+.comment-actions { display:flex; gap:15px; align-items:center; }
+.comment-actions button { border:0; background:none; color:var(--muted); padding:3px 0; font-size:10px; font-weight:750; }
+.comment-actions button:hover,.comment-actions button.liked { color:var(--accent); }
+.reply-list { margin:13px 0 0 34px; padding-left:14px; border-left:2px solid var(--line); }
+.reply { font-size:11px; line-height:1.6; margin:10px 0; white-space:pre-wrap; }
+.reply strong { margin-right:7px; }
+.profile-hero { background:linear-gradient(115deg,var(--navy),#44356B); color:#fff; border-radius:23px; padding:27px; display:flex; align-items:center; gap:20px; }
+.profile-hero .avatar { width:72px;height:72px;font-size:24px;border:3px solid #ffffff55; }
+.profile-hero h1 { font-size:30px; margin:0 0 5px; }
+.profile-hero p { color:#D5D0E6; margin:0; font-size:11px; }
+.stat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:18px 0; }
+.stat-card { background:var(--surface); border:1px solid var(--line); padding:17px; border-radius:15px; }
+.stat-card strong { display:block; font:600 24px var(--site-font-heading); }
+.stat-card span { color:var(--muted); font-size:10px; }
+.modal-backdrop { position:fixed; inset:0; background:#0C1020A8; z-index:100; display:grid; place-items:center; padding:18px; }
+.modal { width:min(520px,100%); max-height:min(88vh,850px); overflow:auto; background:var(--surface); color:var(--text); border:1px solid var(--line); border-radius:22px; box-shadow:0 24px 90px #08081777; padding:26px; }
+.modal.wide { width:min(760px,100%); }
+.modal-head { display:flex; align-items:start; justify-content:space-between; gap:14px; margin-bottom:20px; }
+.modal-head h2 { font-size:25px; margin:5px 0 0; }
+.close-btn { border:0; background:var(--surface-2); color:var(--muted); width:32px;height:32px;border-radius:50%;font-size:18px; }
+.toast { position:fixed; z-index:200; bottom:22px; left:50%; transform:translateX(-50%); background:#20243B; color:#fff; padding:12px 18px; border-radius:999px; font-size:11px; font-weight:700; box-shadow:var(--shadow); max-width:calc(100% - 30px); text-align:center; }
+.bottom-nav { display:none; }
+.cover-picker { display:flex; gap:9px; flex-wrap:wrap; }
+.color-choice { width:33px;height:33px;border:2px solid var(--surface);outline:1px solid var(--line);border-radius:10px; }
+.color-choice.selected { outline:2px solid var(--accent); }
+.divider { border:0; border-top:1px solid var(--line); margin:22px 0; }
+.inline-note { padding:12px 14px; background:var(--surface-2); border-radius:12px; font-size:10px; color:var(--muted); line-height:1.6; }
+.draft-badge { font-size:9px; font-weight:800; color:#A66D2C; background:#F8EBD9; border-radius:999px; padding:5px 8px; }
+.tabs { display:flex; flex-wrap:wrap; gap:7px; border-bottom:1px solid var(--line); margin-bottom:18px; }
+.tab { border:0; background:none; color:var(--muted); padding:10px 12px; font-size:11px; font-weight:750; border-bottom:2px solid transparent; }
+.tab.active { color:var(--accent); border-color:var(--accent); }
+@media (max-width:1050px) {
+ .layout { grid-template-columns:205px minmax(0,1fr); }
+ .sidebar { padding-inline:13px; }
+ .brand { min-width:190px; }
+ .story-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+}
+@media (max-width:760px) {
+ .topbar { height:64px; padding:0 16px; gap:12px; }
+ .brand { min-width:0; }
+ .brand-tagline,.top-search { display:none; }
+ .brand-mark { width:34px;height:34px; }
+ .layout { display:block; min-height:calc(100vh - 64px); }
+ .sidebar { display:none; }
+ .main { padding:22px 16px 92px; }
+ .hero { padding:29px 25px; min-height:265px; grid-template-columns:1fr; }
+ .hero-art { position:absolute; right:-42px; bottom:-55px; width:185px; opacity:.42; }
+ .hero-copy { max-width:90%; }
+ .hero h1 { font-size:37px; }
+ .story-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px 12px; }
+ .cover { min-height:0; }
+ .section-head { margin-top:29px; }
+ .detail-head { grid-template-columns:112px 1fr; gap:17px; align-items:start; }
+ .detail-cover { border-radius:14px; }
+ .detail-copy h1 { font-size:28px; }
+ .detail-copy .description { font-size:11px; max-height:88px; overflow:hidden; }
+ .detail-stats { gap:10px; margin:12px 0; font-size:9px; }
+ .detail-copy .btn { padding:9px 12px; font-size:10px; }
+ .reader-paper { padding:24px 20px; }
+ .reader-paper h1 { font-size:26px; }
+ .reader-body { font-size:18px; }
+ .page-title { align-items:start; flex-direction:column; }
+ .form-grid { grid-template-columns:1fr; }
+ .form-group.full { grid-column:auto; }
+ .bottom-nav { display:grid; grid-template-columns:repeat(5,1fr); position:fixed; z-index:30; bottom:0; left:0; right:0; height:66px; padding:7px 8px max(7px,env(safe-area-inset-bottom)); background:var(--surface); border-top:1px solid var(--line); }
+ .bottom-nav button { display:flex; align-items:center; justify-content:center; gap:4px; flex-direction:column; border:0; background:transparent; color:var(--muted); font-size:9px; font-weight:700; }
+ .bottom-nav button.active { color:var(--accent); }
+ .bottom-nav svg { width:19px;height:19px; }
+ .recent-row { grid-template-columns:53px minmax(0,1fr) auto; gap:10px; padding:9px; }
+ .mini-cover { width:53px;height:62px; }
+ .profile-hero { padding:20px; gap:13px; }
+ .profile-hero .avatar { width:58px;height:58px; }
+ .stat-grid { gap:8px; }
+ .stat-card { padding:13px; }
+ .stat-card strong { font-size:20px; }
+}
+@media (max-width:390px) {
+ .story-grid { gap:14px 9px; }
+ .story-card h3 { font-size:12px; }
+ .cover .cover-title { font-size:18px; left:13px; }
+ .cover .cover-kicker { left:13px; }
+ .detail-head { grid-template-columns:94px 1fr; gap:13px; }
+ .detail-copy h1 { font-size:24px; }
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <button class="brand" data-page="home" aria-label="MY STORY home">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 5.5c3.1-1.2 5.8-.8 8 1.1v13c-2.2-1.9-4.9-2.3-8-1.1z"/><path d="M20 5.5c-3.1-1.2-5.8-.8-8 1.1v13c2.2-1.9 4.9-2.3 8-1.1z"/><path d="M7 9h2M7 12h2m6-3h2m-2 3h2"/></svg></span>
+      <span><span class="brand-name">MY STORY</span><span class="brand-tagline">YOUR WORLD, IN WORDS</span></span>
+    </button>
+    <div class="top-search"><span class="search-icon">⌕</span><input id="globalSearch" placeholder="Tìm truyện, tác giả, thể loại..." aria-label="Tìm kiếm"></div>
+    <div class="top-actions"><button class="icon-button" id="themeToggle" title="Đổi giao diện">☾</button><button class="btn btn-primary" id="topWrite">＋ Viết truyện</button><button class="avatar" id="topAvatar" title="Hồ sơ">G</button></div>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div><div class="nav-label">KHÁM PHÁ</div><div class="nav-list">
+        <button class="nav-item active" data-page="home"><span>⌂</span> Trang chủ</button>
+        <button class="nav-item" data-page="explore"><span>⌕</span> Khám phá truyện</button>
+        <button class="nav-item" data-page="library"><span>▤</span> Tủ sách của tôi</button>
+      </div></div>
+      <div><div class="nav-label">SÁNG TÁC</div><div class="nav-list">
+        <button class="nav-item" data-page="write"><span>✎</span> Viết truyện mới</button>
+        <button class="nav-item" data-page="profile"><span>◉</span> Hồ sơ cá nhân</button>
+      </div></div>
+      <div><div class="nav-label">CỘNG ĐỒNG</div><div class="nav-list"><button class="nav-item" data-page="comments"><span>☷</span> Bình luận</button></div></div>
+      <div><div class="nav-label">TÀI KHOẢN</div><div class="nav-list">
+        <button class="nav-item" data-page="settings"><span>⚙</span> Cài đặt</button>
+        <button class="nav-item" id="authNav"><span>⇥</span> Đăng nhập</button>
+      </div></div>
+      <div class="sidebar-spacer"></div>
+      <div class="sidebar-note"><strong>Every story matters.</strong><p>Một thế giới mới đang chờ được viết nên. Hãy để trí tưởng tượng dẫn lối.</p></div>
+      <div class="sidebar-user"><div class="avatar" id="sideAvatar">G</div><div class="user-meta"><strong id="sideName">Guest Player</strong><span id="sideId">Ply1 · Đang đọc tự do</span></div><button class="icon-button" id="sideProfile" style="width:30px;height:30px">⋯</button></div>
+    </aside>
+    <main class="main"><div class="content-wrap" id="view"></div></main>
+  </div>
+  <nav class="bottom-nav" aria-label="Điều hướng nhanh">
+    <button data-page="home" class="active"><span>⌂</span>Home</button><button data-page="explore"><span>⌕</span>Khám phá</button><button data-page="write"><span>✎</span>Viết</button><button data-page="library"><span>▤</span>Tủ sách</button><button data-page="profile"><span>◉</span>Tôi</button>
+  </nav>
+</div>
+<div id="modalRoot"></div><div id="toastRoot" aria-live="polite"></div>
+<script>
+(() => {
+  const KEY = 'mystory.mvp.v1';
+  const SESSION = 'mystory.session.v1';
+  const GUEST = 'mystory.guest.v1';
+  const palette = ['linear-gradient(145deg,#26395D,#7298B7)','linear-gradient(145deg,#33234F,#9A76C2)','linear-gradient(145deg,#733F4C,#D18A87)','linear-gradient(145deg,#193D40,#68A7A0)','linear-gradient(145deg,#48402D,#B49A5C)','linear-gradient(145deg,#2A3158,#777AC5)','linear-gradient(145deg,#5C325E,#BA87C0)','linear-gradient(145deg,#263B53,#72A2C8)'];
+  const $ = (s, root=document) => root.querySelector(s);
+  const $$ = (s, root=document) => [...root.querySelectorAll(s)];
+  const now = () => new Date().toISOString();
+  const uid = () => Math.random().toString(36).slice(2,10) + Date.now().toString(36).slice(-4);
+  const esc = (v='') => String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const fmt = v => new Intl.DateTimeFormat('vi-VN',{dateStyle:'medium'}).format(new Date(v));
+  const ago = v => { const n=(Date.now()-new Date(v).getTime())/1000; if(n<60)return 'Vừa xong'; if(n<3600)return Math.floor(n/60)+' phút trước'; if(n<86400)return Math.floor(n/3600)+' giờ trước'; if(n<604800)return Math.floor(n/86400)+' ngày trước'; return fmt(v); };
+  const safeStore = { get(k){try{return localStorage.getItem(k)}catch(e){return null}}, set(k,v){try{localStorage.setItem(k,v);return true}catch(e){toast('Không thể lưu: bộ nhớ trình duyệt có thể đã đầy.');return false}} };
+  const seeded = () => ({
+    counter: 1,
+    users: [],
+    stories: [],
+    comments: [],
+    follows: [], reports: [], history: [], bookmarks: []
+  });
+  let db;
+  try { db=JSON.parse(safeStore.get(KEY)||'null') || seeded(); } catch(e){ db=seeded(); }
+  // Never retain built-in demo authors, stories, or comments.
+  db.stories=(db.stories||[]).filter(story=>!String(story.authorId||'').startsWith('seed-'));
+  const realStoryIds=new Set(db.stories.map(story=>story.id));
+  db.comments=(db.comments||[]).filter(comment=>realStoryIds.has(comment.storyId));
+  const save = () => safeStore.set(KEY,JSON.stringify(db));
+  if(!safeStore.get(GUEST)) { safeStore.set(GUEST,'Ply'+(db.counter||1)); db.counter=Math.max(db.counter||1,parseInt(safeStore.get(GUEST).slice(3),10)+1); save(); }
+  let guestId=safeStore.get(GUEST);
+  let sessionId=safeStore.get(SESSION);
+  let page='home', activeStory=null, activeChapter=null, editorStory=null, selectedCover=1, readerFont=19, exploreFilter='All', exploreQuery='', commentReply=null;
+  const categories=['Fantasy','Romance','Mystery','Drama','Sci-Fi','Adventure','Horror','Poetry','Other'];
+  function currentUser(){ return db.users.find(u=>u.id===sessionId)||null; }
+  function player(){ const u=currentUser(); return u?{key:'user:'+u.id,id:u.id,name:u.username,avatar:u.avatar||'',registered:true}: {key:'guest:'+guestId,id:guestId,name:guestId,avatar:'',registered:false}; }
+  function persist(){ save(); updateShell(); }
+  function toast(msg){ const root=$('#toastRoot'); root.innerHTML=`<div class="toast">${esc(msg)}</div>`; setTimeout(()=>{root.innerHTML=''},2600); }
+  function avatarHtml(user,size=''){ return `<div class="avatar" ${size?`style="${size}"`:''}>${user.avatar?`<img src="${esc(user.avatar)}" alt="">`:esc((user.name||'P').slice(0,1).toUpperCase())}</div>`; }
+  function updateShell(){ const p=player(); $('#sideName').textContent=p.name; $('#sideId').textContent=p.registered?'Registered Player':p.id+' · Đang đọc tự do'; $('#sideAvatar').innerHTML=p.avatar?`<img src="${esc(p.avatar)}">`:esc(p.name.slice(0,1).toUpperCase()); $('#topAvatar').innerHTML=p.avatar?`<img src="${esc(p.avatar)}">`:esc(p.name.slice(0,1).toUpperCase()); $('#authNav').innerHTML=p.registered?'<span>⇥</span> Đăng xuất':'<span>⇥</span> Đăng nhập'; }
+  function coverHtml(story,cls='cover'){ const style=palette[(story.cover||1)-1]||palette[0]; return `<div class="${cls}" style="background:${style}">${story.coverImage?`<img src="${esc(story.coverImage)}" alt="Bìa ${esc(story.title)}">`:`<span class="cover-glow"></span><span class="cover-title">${esc(story.title)}</span><span class="cover-kicker">A MY STORY ORIGINAL</span>`}</div>`; }
+  function storyCard(story){ return `<article class="story-card" data-story="${esc(story.id)}">${coverHtml(story)}<h3>${esc(story.title)}</h3><div class="byline">${esc(story.authorName)} · ${esc(story.category)}</div><div class="story-meta"><span>▤ ${story.chapters.length} chương</span><span>◷ ${ago(story.updatedAt)}</span><span class="pill">${esc(story.status)}</span></div></article>`; }
+  function publishedStories(){ return db.stories.filter(s=>s.published || (currentUser()&&s.authorId===currentUser().id)); }
+  function renderHome(){ const stories=db.stories.filter(s=>s.published); const recent=[...db.history].filter(h=>h.userKey===player().key).slice(-3).reverse().map(h=>db.stories.find(s=>s.id===h.storyId)).filter(Boolean); const featured=stories.slice(0,4); return `<section class="hero"><div class="hero-copy"><div class="eyebrow">A SPACE FOR EVERY STORY</div><h1>Viết nên thế giới<br>của riêng bạn.</h1><p>Khám phá những câu chuyện mới, gặp gỡ những tâm hồn đồng điệu và biến ý tưởng của bạn thành từng trang chữ.</p><button class="btn btn-primary" data-page="explore">Khám phá truyện <span>→</span></button></div><div class="hero-art"><div class="book-orbit"><span class="orbit-dot one"></span><span class="orbit-dot two"></span></div></div></section>
+      ${recent.length?`<div class="section-head"><div><div class="eyebrow">PICK UP WHERE YOU LEFT</div><h2>Đọc tiếp</h2></div><button class="text-link" data-page="library">Tủ sách của tôi →</button></div>${recent.map(s=>`<div class="recent-row" data-story="${s.id}">${coverHtml(s,'mini-cover')}<div><h3>${esc(s.title)}</h3><p>${esc(s.authorName)} · ${s.chapters.length} chương</p><p style="margin-top:5px">Tiếp tục hành trình của bạn →</p></div><span>›</span></div>`).join('')}`:''}
+      <div class="section-head"><div><div class="eyebrow">HANDPICKED FOR YOU</div><h2>Những câu chuyện nổi bật</h2></div><button class="text-link" data-page="explore">Xem tất cả →</button></div><div class="story-grid">${featured.map(storyCard).join('')}</div>
+      <div class="section-head"><div><div class="eyebrow">FIND YOUR NEXT WORLD</div><h2>Khám phá theo thể loại</h2></div></div><div class="toolbar">${['Fantasy','Romance','Mystery','Drama','Sci-Fi','Adventure'].map(c=>`<button class="btn btn-soft" data-category="${c}">${c}</button>`).join('')}</div>`; }
+  function renderExplore(){ let list=db.stories.filter(s=>s.published); const q=exploreQuery.trim().toLowerCase(); if(q)list=list.filter(s=>(s.title+' '+s.authorName+' '+s.description+' '+s.tags.join(' ')).toLowerCase().includes(q)); if(exploreFilter!=='All')list=list.filter(s=>s.category===exploreFilter); return `<div class="page-title"><div><div class="eyebrow">THE STORY UNIVERSE</div><h1>Khám phá truyện</h1><p class="muted small">Tìm câu chuyện tiếp theo khiến bạn không thể đặt sách xuống.</p></div><button class="btn btn-primary" data-page="write">＋ Sáng tác</button></div><div class="toolbar"><input class="field" id="exploreSearch" style="max-width:330px" placeholder="Tìm tên truyện, tác giả, tags..." value="${esc(exploreQuery)}"><select id="categoryFilter" class="select-field"><option value="All">Tất cả thể loại</option>${categories.map(c=>`<option ${c===exploreFilter?'selected':''}>${c}</option>`).join('')}</select><select id="sortFilter" class="select-field"><option value="new">Mới cập nhật</option><option value="old">Cũ hơn</option><option value="title">Tên truyện A–Z</option></select></div><div class="story-grid" id="exploreResults">${list.length?list.map(storyCard).join(''):'<div class="empty" style="grid-column:1/-1"><div class="empty-icon">⌕</div>Không tìm thấy truyện phù hợp.</div>'}</div>`; }
+  function renderLibrary(){ const p=player(); const owned=db.stories.filter(s=>s.authorId===(currentUser()?.id||'')&&!s.published); const marked=db.bookmarks.filter(b=>b.userKey===p.key).map(b=>db.stories.find(s=>s.id===b.storyId)).filter(Boolean); const read=db.history.filter(h=>h.userKey===p.key).slice(-8).reverse().map(h=>db.stories.find(s=>s.id===h.storyId)).filter(Boolean); return `<div class="page-title"><div><div class="eyebrow">YOUR PERSONAL SHELF</div><h1>Tủ sách của tôi</h1><p class="muted small">Lưu lại những thế giới bạn yêu thích.</p></div></div><div class="tabs"><button class="tab active" data-tab="saved">Đã lưu (${marked.length})</button><button class="tab" data-tab="history">Lịch sử đọc (${read.length})</button><button class="tab" data-tab="drafts">Bản nháp (${owned.length})</button></div><div class="story-grid" id="libraryResults">${marked.length?marked.map(storyCard).join(''):'<div class="empty" style="grid-column:1/-1"><div class="empty-icon">▤</div>Tủ sách còn trống. Hãy lưu một câu chuyện bạn yêu thích nhé.</div>'}</div>`; }
+  function renderStory(id){ const s=db.stories.find(x=>x.id===id); if(!s){page='explore';return renderExplore()} if(!s.published && s.authorId!==currentUser()?.id){page='explore';return renderExplore()} activeStory=id; const c=db.comments.filter(c=>c.storyId===id&&!c.parentId); const p=player(); const marked=db.bookmarks.some(b=>b.userKey===p.key&&b.storyId===id); const owner=currentUser()?.id===s.authorId; return `<button class="text-link" data-page="explore" style="padding-left:0;margin-bottom:16px">← Quay lại khám phá</button><section class="detail-head">${coverHtml(s,'detail-cover')}<div class="detail-copy"><div class="eyebrow">${esc(s.category)} · ${s.published?'STORY':'DRAFT'}</div><h1>${esc(s.title)}</h1><div class="muted small">Bởi <strong>${esc(s.authorName)}</strong> · Cập nhật ${fmt(s.updatedAt)}</div><p class="description">${esc(s.description)}</p><div class="detail-stats"><span>▤ ${s.chapters.length} chương</span><span>♡ ${c.length} bình luận</span><span>◷ ${esc(s.status)}</span></div><div class="tag-row">${s.tags.map(t=>`<span class="pill">#${esc(t)}</span>`).join('')}</div><div class="toolbar" style="margin:17px 0 0"><button class="btn btn-primary" data-read-first="${s.id}">Đọc từ đầu →</button><button class="btn btn-soft" data-bookmark="${s.id}">${marked?'✓ Đã lưu':'＋ Lưu truyện'}</button>${!owner?`<button class="btn btn-ghost" data-follow="${esc(s.authorId)}">${db.follows.some(f=>f.userKey===p.key&&f.authorId===s.authorId)?'Đang theo dõi':'＋ Theo dõi tác giả'}</button>`:`<button class="btn btn-ghost" data-edit-story="${s.id}">Chỉnh sửa</button><button class="btn btn-danger" data-delete-story="${s.id}">Xóa</button>`}</div></div></section>
+      <div class="section-head"><div><div class="eyebrow">READING JOURNEY</div><h2>Danh sách chương</h2></div>${owner?`<button class="btn btn-soft" data-add-chapter="${s.id}">＋ Thêm chương</button>`:''}</div><div class="chapter-list">${s.chapters.map((ch,i)=>`<div class="chapter-item" data-open-chapter="${s.id}" data-chapter="${ch.id}"><div class="chapter-number">${String(i+1).padStart(2,'0')}</div><div class="chapter-info"><strong>${esc(ch.title)}</strong><small>${fmt(ch.createdAt||s.updatedAt)}</small></div><span>›</span></div>`).join('')||'<div class="empty">Chưa có chương nào.</div>'}</div>
+      <div class="section-head"><div><div class="eyebrow">COMMUNITY</div><h2>Bình luận <span class="muted">(${c.length})</span></h2></div></div>${commentComposer(id,null)}<div id="storyComments">${c.slice().reverse().map(commentHtml).join('')||'<div class="empty">Chưa có bình luận. Hãy là người đầu tiên chia sẻ cảm nhận!</div>'}</div>`; }
+  function commentComposer(storyId,parentId){ return `<div class="panel" style="margin-bottom:17px"><textarea class="textarea" id="commentInput-${parentId||'root'}" rows="3" placeholder="Chia sẻ cảm nhận của bạn..." maxlength="1200"></textarea><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:10px"><span class="form-help">Đang bình luận với tư cách ${esc(player().name)} · Tối đa 1.200 ký tự</span><button class="btn btn-primary" data-submit-comment="${storyId}" data-parent="${parentId||''}">Gửi bình luận</button></div></div>`; }
+  function commentHtml(c){ const liked=(c.likes||[]).includes(player().key); const replies=db.comments.filter(r=>r.parentId===c.id); return `<div class="comment"><div class="comment-head">${avatarHtml({name:c.authorName,avatar:c.authorAvatar||''})}<div><strong>${esc(c.authorName)}</strong><time> · ${ago(c.createdAt)}</time></div></div><div class="comment-text">${esc(c.text)}</div><div class="comment-actions"><button class="${liked?'liked':''}" data-like-comment="${c.id}">${liked?'♥':'♡'} ${c.likes?.length||0} Thích</button><button data-reply="${c.id}">↳ Trả lời</button><button data-report="${c.id}">⚑ Báo cáo</button></div>${replies.length?`<div class="reply-list">${replies.map(r=>`<div class="reply"><strong>${esc(r.authorName)}</strong><span class="muted">${ago(r.createdAt)}</span><div>${esc(r.text)}</div><div class="comment-actions"><button data-report="${r.id}">Báo cáo</button></div></div>`).join('')}</div>`:''}${commentReply===c.id?`<div style="margin:12px 0 0 34px">${commentComposer(c.storyId,c.id)}</div>`:''}</div>`; }
+  function renderReader(storyId,chapterId){ const s=db.stories.find(x=>x.id===storyId); if(!s){page='home';return renderHome()} if(!s.published&&s.authorId!==currentUser()?.id){page='home';return renderHome()} const ix=s.chapters.findIndex(c=>c.id===chapterId); if(ix<0){page='story';activeStory=s.id;return renderStory(s.id)} const ch=s.chapters[ix]; activeStory=storyId;activeChapter=chapterId; const p=player(); db.history.push({userKey:p.key,storyId,chapterId,at:now()}); db.history=db.history.slice(-300); save(); const comments=db.comments.filter(c=>c.storyId===storyId&&(!c.chapterId||c.chapterId===chapterId)&&!c.parentId); return `<div class="reader-shell"><div class="reader-top"><button class="text-link" data-open-story="${s.id}">← ${esc(s.title)}</button><div class="reader-tools"><button data-font="-1" aria-label="Giảm cỡ chữ">A−</button><button data-font="1" aria-label="Tăng cỡ chữ">A＋</button><button id="readerTheme" title="Chế độ đọc">◐</button></div></div><article class="reader-paper"><div class="eyebrow">${esc(s.category)} · CHƯƠNG ${ix+1}/${s.chapters.length}</div><h1>${esc(ch.title)}</h1><div class="muted small">${esc(s.title)} · ${esc(s.authorName)}</div><div class="reader-body" id="readerBody" style="font-size:${readerFont}px">${esc(ch.content)}</div><div class="muted small" style="margin-top:28px">Cập nhật ${fmt(ch.createdAt||s.updatedAt)}</div></article><div class="reader-nav"><button class="btn btn-ghost" ${ix===0?'disabled':''} data-chapter-nav="${s.id}" data-index="${ix-1}">← Chương trước</button><select class="select-field" id="chapterSelect" aria-label="Chọn chương">${s.chapters.map((x,i)=>`<option value="${i}" ${i===ix?'selected':''}>Chương ${i+1}</option>`).join('')}</select><button class="btn btn-primary" ${ix===s.chapters.length-1?'disabled':''} data-chapter-nav="${s.id}" data-index="${ix+1}">Chương sau →</button></div><div class="section-head"><div><div class="eyebrow">JOIN THE CONVERSATION</div><h2>Bình luận chương</h2></div><span class="pill">${comments.length} ý kiến</span></div>${commentComposer(s.id,null)}<div id="readerComments">${comments.slice().reverse().map(commentHtml).join('')||'<div class="empty">Chưa có bình luận cho chương này.</div>'}</div></div>`; }
+  function renderComments(){ const p=player(); const mine=db.comments.filter(c=>c.authorKey===p.key).slice().reverse(); const owned=db.stories.filter(s=>s.authorId===currentUser()?.id).map(s=>s.id); const received=db.comments.filter(c=>owned.includes(c.storyId)&&c.authorKey!==p.key).slice().reverse(); const block=(items)=>items.length?items.map(c=>{const st=db.stories.find(s=>s.id===c.storyId);return `<div class="panel" style="margin-bottom:12px"><div class="muted small" style="margin-bottom:10px">Trong truyện: <strong>${esc(st?.title||'Truyện đã xóa')}</strong></div>${commentHtml(c)}</div>`}).join(''):'<div class="empty">Chưa có bình luận nào ở đây.</div>'; return `<div class="page-title"><div><div class="eyebrow">COMMUNITY SPACE</div><h1>Bình luận</h1><p class="muted small">Theo dõi những cuộc trò chuyện bạn tham gia.</p></div></div><div class="section-head"><div><div class="eyebrow">YOUR VOICE</div><h2>Bình luận của tôi (${mine.length})</h2></div></div>${block(mine)}${currentUser()?`<div class="section-head"><div><div class="eyebrow">ON YOUR STORIES</div><h2>Bình luận trên truyện của tôi (${received.length})</h2></div></div>${block(received)}`:''}`; }
+  function renderProfile(){ const p=player(); const u=currentUser(); const own=db.stories.filter(s=>s.authorId===(u?.id||'')).filter(s=>s.published); const followers=db.follows.filter(f=>f.authorId===(u?.id||'')).length; return `<section class="profile-hero">${avatarHtml(p,'width:72px;height:72px;font-size:25px')}<div style="flex:1;min-width:0"><div class="eyebrow" style="color:#CDBCF4">${p.registered?'REGISTERED PLAYER':'GUEST PLAYER'}</div><h1>${esc(p.name)}</h1><p>${p.registered?esc(u.bio||'Một tâm hồn yêu những câu chuyện.'):'Player ID: '+esc(guestId)+' · Tài khoản khách'}</p></div>${u?'<div class="toolbar" style="margin:0"><button class="btn btn-soft" data-edit-profile>Đổi avatar</button><button class="btn btn-primary" data-edit-profile>Chỉnh sửa hồ sơ</button></div>':'<button class="btn btn-primary" data-open-auth="register">Tạo tài khoản</button>'}</section><p class="form-help" style="margin:10px 2px 0">Đổi avatar: chọn ảnh từ thiết bị, xem trước rồi nhấn Lưu hồ sơ.</p><div class="toolbar" style="margin:17px 0 0"><button class="btn btn-soft" data-page="comments">☷ Bình luận của tôi</button><button class="btn btn-ghost" data-page="settings">⚙ Cài đặt</button></div><div class="stat-grid"><div class="stat-card"><strong>${own.length}</strong><span>Truyện đã đăng</span></div><div class="stat-card"><strong>${followers}</strong><span>Người theo dõi</span></div><div class="stat-card"><strong>${db.comments.filter(c=>c.authorKey===p.key).length}</strong><span>Bình luận</span></div></div><div class="section-head"><div><div class="eyebrow">AUTHOR SPACE</div><h2>${u?'Truyện của tôi':'Hoạt động sáng tác'}</h2></div>${u?'<button class="btn btn-primary" data-page="write">＋ Viết truyện</button>':''}</div>${own.length?`<div class="story-grid">${own.map(storyCard).join('')}</div>`:`<div class="empty"><div class="empty-icon">✎</div>${u?'Bạn chưa đăng truyện nào.':'Guest Player có thể đọc và bình luận. Đăng ký tài khoản để bắt đầu sáng tác.'}</div>`}`; }
+  function renderSettings(){ const p=player(); return `<div class="page-title"><div><div class="eyebrow">MAKE IT YOURS</div><h1>Cài đặt</h1><p class="muted small">Tùy chỉnh trải nghiệm đọc và tài khoản.</p></div></div><div class="panel" style="max-width:700px"><h3>Giao diện</h3><p class="muted small">Chọn chế độ hiển thị phù hợp với bạn.</p><div class="toolbar"><button class="btn btn-soft" id="lightMode">☼ Light Mode</button><button class="btn btn-dark" id="darkMode">☾ Dark Mode</button></div><hr class="divider"><h3>Tài khoản & Player</h3><div class="recent-row" style="margin:12px 0;cursor:default"><div class="avatar">${esc(p.name.slice(0,1))}</div><div><h3>${esc(p.name)}</h3><p>${p.registered?'Registered Player':'Guest Player · '+esc(p.id)}</p></div></div>${p.registered?`<button class="btn btn-danger" id="logoutBtn">Đăng xuất</button>`:`<p class="inline-note">Bạn đang dùng Guest Player. Tài khoản khách được lưu trên trình duyệt hiện tại. Tạo tài khoản để sáng tác và mang hồ sơ sang backend khi nền tảng được triển khai.</p><button class="btn btn-primary" data-open-auth="register">Đăng ký tài khoản</button><button class="btn btn-ghost" data-open-auth="login" style="margin-left:6px">Đăng nhập</button>`}<hr class="divider"><h3>Dữ liệu trên thiết bị</h3><p class="muted small">MVP lưu truyện, bình luận, lịch sử đọc và hồ sơ trong bộ nhớ trình duyệt. Xóa dữ liệu sẽ không thể khôi phục.</p><button class="btn btn-danger" id="clearLocal">Xóa dữ liệu My Story trên thiết bị</button></div>`; }
+  function renderWrite(id){ const s=id?db.stories.find(x=>x.id===id):null; if(!currentUser()){openAuth('login');page='home';return renderHome()} if(s&&s.authorId!==currentUser().id){toast('Bạn không có quyền chỉnh sửa truyện này.');page='home';return renderHome()} editorStory=s?.id||null; selectedCover=s?.cover||1; const chs=s?.chapters||[]; return `<div class="page-title"><div><div class="eyebrow">THE AUTHOR'S DESK</div><h1>${s?'Chỉnh sửa truyện':'Bắt đầu một câu chuyện'}</h1><p class="muted small">Mỗi thế giới lớn đều bắt đầu từ một dòng chữ.</p></div><span class="pill accent">${s?'EDIT STORY':'NEW STORY'}</span></div><form id="storyForm" class="panel"><div class="form-grid"><div class="form-group full"><label for="storyTitle">Tên truyện *</label><input class="field" id="storyTitle" maxlength="100" required placeholder="Tên câu chuyện của bạn" value="${esc(s?.title||'')}"></div><div class="form-group full"><label for="storyDescription">Mô tả *</label><textarea class="textarea" id="storyDescription" maxlength="1200" required placeholder="Giới thiệu ngắn về câu chuyện...">${esc(s?.description||'')}</textarea></div><div class="form-group"><label for="storyCategory">Thể loại *</label><select class="select-field" id="storyCategory" style="width:100%">${categories.map(c=>`<option ${s?.category===c?'selected':''}>${c}</option>`).join('')}</select></div><div class="form-group"><label for="storyStatus">Trạng thái</label><select class="select-field" id="storyStatus" style="width:100%">${['Ongoing','Completed','Hiatus'].map(c=>`<option ${s?.status===c?'selected':''}>${c}</option>`).join('')}</select></div><div class="form-group full"><label for="storyTags">Tags (phân cách bằng dấu phẩy)</label><input class="field" id="storyTags" maxlength="180" placeholder="phép thuật, phiêu lưu, tình bạn" value="${esc(s?.tags?.join(', ')||'')}"></div><div class="form-group full"><label>Ảnh bìa / màu bìa</label><div class="cover-picker">${palette.map((c,i)=>`<button type="button" class="color-choice ${selectedCover===i+1?'selected':''}" style="background:${c}" data-cover-choice="${i+1}" aria-label="Mẫu bìa ${i+1}"></button>`).join('')}</div><label for="coverUpload" class="form-help">Tải ảnh bìa (tùy chọn, ảnh sẽ được thu nhỏ để lưu trên thiết bị)</label><input type="file" id="coverUpload" accept="image/*" class="field" style="padding:8px"></div></div><hr class="divider"><div class="section-head" style="margin:0 0 14px"><div><div class="eyebrow">CHAPTERS</div><h2 style="font-size:22px">Chương truyện</h2></div><button class="btn btn-soft" type="button" id="addChapterField">＋ Thêm chương</button></div><div id="chapterFields">${(chs.length?chs:[{title:'Chương 1: ...',content:''}]).map((c,i)=>chapterEditorField(c,i)).join('')}</div><div class="inline-note" style="margin-top:18px">Nội dung chương hỗ trợ xuống dòng. Bản nháp chỉ hiển thị với tác giả; xuất bản sẽ đưa truyện lên trang Khám phá trong phạm vi dữ liệu trên thiết bị này.</div><div class="toolbar" style="justify-content:flex-end;margin:22px 0 0"><button class="btn btn-ghost" type="button" id="cancelWrite">Hủy</button><button class="btn btn-soft" type="button" id="saveDraft">Lưu bản nháp</button><button class="btn btn-primary" type="submit">${s&&s.published?'Lưu thay đổi':'Xuất bản truyện'} →</button></div></form>`; }
+  function chapterEditorField(c,i){ return `<div class="panel chapter-field" data-chapter-field="${i}" style="padding:15px;margin:12px 0;background:var(--surface-2)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><strong style="font-size:12px">Chương ${i+1}</strong><button type="button" class="text-link" data-remove-chapter="${i}">Xóa chương</button></div><input class="field chapter-title" maxlength="120" required placeholder="Tên chương" value="${esc(c.title||'')}"><textarea class="textarea chapter-content" required style="margin-top:9px;min-height:180px" placeholder="Nội dung chương...">${esc(c.content||'')}</textarea><input type="hidden" class="chapter-id" value="${esc(c.id||'')}"></div>`; }
+  function render(){ updateShell(); const view=$('#view'); let html=''; if(page==='home')html=renderHome(); else if(page==='explore')html=renderExplore(); else if(page==='library')html=renderLibrary(); else if(page==='story')html=renderStory(activeStory); else if(page==='reader')html=renderReader(activeStory,activeChapter); else if(page==='profile')html=renderProfile(); else if(page==='comments')html=renderComments(); else if(page==='settings')html=renderSettings(); else if(page==='write')html=renderWrite(editorStory); else html=renderHome(); view.innerHTML=html; $$('.nav-item,[data-page]').forEach(el=>{const p=el.dataset.page;el.classList.toggle('active',p===page)}); }
+  function go(p){ if(p==='write'&&!currentUser()){openAuth('login');return} page=p; if(p!=='write')editorStory=null; commentReply=null; render(); window.scrollTo({top:0,behavior:'smooth'}); }
+  function openAuth(mode='login'){ const title=mode==='register'?'Tạo tài khoản MY STORY':'Chào mừng trở lại'; $('#modalRoot').innerHTML=`<div class="modal-backdrop" data-close-modal><div class="modal" role="dialog" aria-modal="true" aria-label="${title}"><div class="modal-head"><div><div class="eyebrow">MY STORY ACCOUNT</div><h2>${title}</h2><p class="muted small">${mode==='register'?'Lưu lại thế giới và bắt đầu sáng tác.':'Đăng nhập để tiếp tục hành trình của bạn.'}</p></div><button class="close-btn" data-close-modal>×</button></div><form id="authForm"><div class="form-grid">${mode==='register'?`<div class="form-group full"><label>Username *</label><input class="field" id="authUsername" required minlength="3" maxlength="24" pattern="[A-Za-z0-9_]+" placeholder="ten_cua_ban"></div>`:''}<div class="form-group full"><label>Email *</label><input class="field" type="email" id="authEmail" required maxlength="160" placeholder="you@example.com"></div><div class="form-group full"><label>Mật khẩu *</label><input class="field" type="password" id="authPassword" required minlength="8" maxlength="100" placeholder="Ít nhất 8 ký tự"></div>${mode==='register'?`<div class="form-group full"><label>Nhập lại mật khẩu *</label><input class="field" type="password" id="authConfirm" required minlength="8" maxlength="100" placeholder="Nhập lại mật khẩu"></div>`:''}</div><div class="inline-note" style="margin:15px 0">MVP này lưu tài khoản trên thiết bị hiện tại. Mật khẩu được băm PBKDF2 bằng Web Crypto; không gửi đến máy chủ.</div><button class="btn btn-primary" style="width:100%" type="submit">${mode==='register'?'Tạo tài khoản':'Đăng nhập'} →</button></form><p class="muted small" style="text-align:center;margin:18px 0 0">${mode==='register'?'Đã có tài khoản?':'Chưa có tài khoản?'} <button class="text-link" data-switch-auth="${mode==='register'?'login':'register'}">${mode==='register'?'Đăng nhập':'Đăng ký ngay'}</button></p></div></div>`; }
+  async function hashPassword(password,salt){ if(!crypto?.subtle)throw new Error('Trình duyệt không hỗ trợ Web Crypto trong ngữ cảnh hiện tại.'); const enc=new TextEncoder(); const key=await crypto.subtle.importKey('raw',enc.encode(password),'PBKDF2',false,['deriveBits']); const bits=await crypto.subtle.deriveBits({name:'PBKDF2',salt:enc.encode(salt),iterations:180000,hash:'SHA-256'},key,256); return [...new Uint8Array(bits)].map(b=>b.toString(16).padStart(2,'0')).join(''); }
+  async function authSubmit(e){ e.preventDefault(); const email=$('#authEmail').value.trim().toLowerCase(),pass=$('#authPassword').value; const register=!!$('#authUsername'); try { if(register){ const username=$('#authUsername').value.trim(); if(pass!==$('#authConfirm').value){toast('Mật khẩu nhập lại chưa khớp.');return} if(db.users.some(u=>u.email===email)){toast('Email này đã được đăng ký trên thiết bị.');return} if(db.users.some(u=>u.username.toLowerCase()===username.toLowerCase())){toast('Username đã được sử dụng.');return} const salt=uid()+uid(); const passwordHash=await hashPassword(pass,salt); const u={id:'usr-'+uid(),username,email,salt,passwordHash,avatar:'',bio:'',createdAt:now()};db.users.push(u);sessionId=u.id;safeStore.set(SESSION,sessionId);persist();$('#modalRoot').innerHTML='';toast('Tài khoản đã được tạo trên thiết bị này!'); if(page==='write')render();else go('profile'); } else { const u=db.users.find(x=>x.email===email); if(!u){toast('Không tìm thấy tài khoản với email này.');return} const hash=await hashPassword(pass,u.salt); if(hash!==u.passwordHash){toast('Email hoặc mật khẩu không chính xác.');return}sessionId=u.id;safeStore.set(SESSION,sessionId);persist();$('#modalRoot').innerHTML='';toast('Đăng nhập thành công!');render(); } } catch(err){toast(err.message||'Không thể xác thực tài khoản.')} }
+  function logout(){sessionId=null;safeStore.set(SESSION,'');toast('Đã đăng xuất. Bạn đang dùng Guest Player '+guestId);go('home')}
+  function confirmModal(title,body,action,label='Xác nhận'){ $('#modalRoot').innerHTML=`<div class="modal-backdrop" data-close-modal><div class="modal"><div class="modal-head"><div><div class="eyebrow">MY STORY</div><h2>${title}</h2></div><button class="close-btn" data-close-modal>×</button></div><p class="muted small">${body}</p><div class="toolbar" style="justify-content:flex-end;margin:20px 0 0"><button class="btn btn-ghost" data-close-modal>Hủy</button><button class="btn btn-danger" id="confirmAction">${label}</button></div></div></div>`;$('#confirmAction').onclick=()=>{action();$('#modalRoot').innerHTML=''}; }
+  function createStoryForm(e,publish){ e.preventDefault(); const title=$('#storyTitle').value.trim(),description=$('#storyDescription').value.trim(); if(!title||!description){toast('Vui lòng nhập tên và mô tả truyện.');return} const fields=$$('.chapter-field'); const chapters=fields.map(f=>({id:$('.chapter-id',f).value||'ch-'+uid(),title:$('.chapter-title',f).value.trim(),content:$('.chapter-content',f).value.trim(),createdAt:now()})); if(!chapters.length||chapters.some(c=>!c.title||!c.content)){toast('Mỗi chương cần có tên và nội dung.');return} const old=editorStory?db.stories.find(s=>s.id===editorStory):null; const s={id:old?.id||'story-'+uid(),title,authorId:currentUser().id,authorName:currentUser().username,description,category:$('#storyCategory').value,tags:$('#storyTags').value.split(',').map(t=>t.trim().replace(/^#/,'')).filter(Boolean).slice(0,12),status:$('#storyStatus').value,cover:selectedCover,coverImage:window.pendingCover!==undefined?window.pendingCover:(old?.coverImage||''),createdAt:old?.createdAt||now(),updatedAt:now(),published:publish||!!old?.published,chapters}; window.pendingCover=undefined; if(old){Object.assign(old,s)}else db.stories.unshift(s);persist();activeStory=s.id;toast(publish?'Truyện đã được xuất bản!':'Bản nháp đã được lưu.');page='story';render(); }
+  function addChapterField(){ const root=$('#chapterFields'); const ix=$$('.chapter-field',root).length; root.insertAdjacentHTML('beforeend',chapterEditorField({title:'',content:''},ix)); }
+  async function resizeImage(file){ return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onerror=()=>reject(new Error('Không đọc được ảnh.'));reader.onload=()=>{const img=new Image();img.onerror=()=>reject(new Error('Tệp ảnh không hợp lệ.'));img.onload=()=>{const scale=Math.min(1,900/Math.max(img.width,img.height));const canvas=document.createElement('canvas');canvas.width=Math.round(img.width*scale);canvas.height=Math.round(img.height*scale);canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);resolve(canvas.toDataURL('image/jpeg',.78))};img.src=reader.result};reader.readAsDataURL(file)})}
+  function openReply(id){ commentReply=commentReply===id?null:id; render(); }
+  function submitComment(storyId,parentId){ const box=$('#commentInput-'+(parentId||'root')); if(!box)return; const text=box.value.trim();if(!text){toast('Hãy nhập nội dung bình luận.');return} if(text.length>1200){toast('Bình luận quá dài.');return} const p=player(); const recent=db.comments.filter(c=>c.authorKey===p.key&&Date.now()-new Date(c.createdAt).getTime()<60000); if(recent.length>=5){toast('Bạn đã bình luận khá nhiều. Vui lòng thử lại sau.');return} const last=recent.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt))[0]; if(last&&Date.now()-new Date(last.createdAt).getTime()<4000){toast('Vui lòng chờ vài giây trước khi gửi tiếp.');return} const s=db.stories.find(s=>s.id===storyId); if(!s){toast('Không tìm thấy truyện.');return} const c={id:'cm-'+uid(),storyId,chapterId:page==='reader'?activeChapter:null,parentId:parentId||null,authorKey:p.key,authorName:p.name,authorAvatar:p.avatar,text,createdAt:now(),likes:[]};db.comments.push(c);persist();commentReply=null;toast('Đã gửi bình luận!');render(); }
+  function openReport(id){ $('#modalRoot').innerHTML=`<div class="modal-backdrop" data-close-modal><div class="modal"><div class="modal-head"><div><div class="eyebrow">COMMUNITY SAFETY</div><h2>Báo cáo nội dung</h2></div><button class="close-btn" data-close-modal>×</button></div><p class="muted small">Chọn lý do báo cáo. Nội dung sẽ được ghi nhận trong danh sách kiểm duyệt cục bộ.</p><form id="reportForm"><select class="select-field" id="reportReason" style="width:100%;margin:12px 0"><option>Spam hoặc quảng cáo</option><option>Quấy rối hoặc công kích</option><option>Nội dung không phù hợp</option><option>Giả mạo hoặc mạo danh</option><option>Lý do khác</option></select><textarea class="textarea" id="reportDetail" maxlength="500" placeholder="Thông tin bổ sung (không bắt buộc)..." style="min-height:90px"></textarea><button class="btn btn-primary" style="width:100%;margin-top:14px">Gửi báo cáo</button></form></div></div>`;$('#reportForm').onsubmit=e=>{e.preventDefault();db.reports.push({id:'rp-'+uid(),targetId:id,reporter:player().key,reason:$('#reportReason').value,detail:$('#reportDetail').value,createdAt:now(),status:'pending'});persist();$('#modalRoot').innerHTML='';toast('Báo cáo đã được ghi nhận trên thiết bị.');}; }
+  function toggleBookmark(id){const p=player(),i=db.bookmarks.findIndex(b=>b.userKey===p.key&&b.storyId===id);if(i>=0)db.bookmarks.splice(i,1);else db.bookmarks.push({userKey:p.key,storyId:id});persist();render();toast(i>=0?'Đã bỏ lưu truyện.':'Đã lưu vào tủ sách.');}
+  function toggleFollow(authorId){const p=player(),i=db.follows.findIndex(f=>f.userKey===p.key&&f.authorId===authorId);if(i>=0)db.follows.splice(i,1);else db.follows.push({userKey:p.key,authorId,createdAt:now()});persist();render();toast(i>=0?'Đã bỏ theo dõi.':'Đang theo dõi tác giả.');}
+  function toggleLike(id){const c=db.comments.find(x=>x.id===id);if(!c)return;c.likes=c.likes||[];const i=c.likes.indexOf(player().key);if(i>=0)c.likes.splice(i,1);else c.likes.push(player().key);persist();render();}
+  function openChapter(storyId,chapterId){activeStory=storyId;activeChapter=chapterId;page='reader';render();window.scrollTo({top:0,behavior:'smooth'});}
+  function editProfile(){const u=currentUser();if(!u){openAuth('login');return}let nextAvatar=u.avatar||'';$('#modalRoot').innerHTML=`<div class="modal-backdrop" data-close-modal><div class="modal"><div class="modal-head"><div><div class="eyebrow">YOUR IDENTITY</div><h2>Chỉnh sửa hồ sơ</h2><p class="muted small">Cập nhật ảnh đại diện và giới thiệu của bạn.</p></div><button class="close-btn" data-close-modal aria-label="Đóng">×</button></div><form id="profileForm"><div class="form-group"><label>Username</label><input class="field" disabled value="${esc(u.username)}"></div><div class="form-group" style="margin-top:16px"><label>Ảnh đại diện</label><div style="display:flex;align-items:center;gap:15px;margin:8px 0 12px"><div class="avatar" id="avatarPreview" style="width:82px;height:82px;font-size:28px;border:3px solid var(--line)">${nextAvatar?`<img src="${esc(nextAvatar)}" alt="Ảnh đại diện xem trước">`:esc(u.username.slice(0,1).toUpperCase())}</div><div><strong style="font-size:12px;display:block">Ảnh của bạn</strong><span class="form-help">Ảnh sẽ tự động thu nhỏ để hiển thị rõ nét.</span></div></div><input type="file" id="avatarUpload" accept="image/png,image/jpeg,image/webp,image/gif" class="field" style="padding:8px"><div class="toolbar" style="margin:9px 0 0"><button class="btn btn-ghost" type="button" id="removeAvatar">Gỡ ảnh đại diện</button></div><p class="form-help">Định dạng: JPG, PNG, WebP hoặc GIF. Tối đa 8 MB.</p></div><div class="form-group" style="margin-top:14px"><label>Giới thiệu bản thân</label><textarea class="textarea" id="profileBio" maxlength="300" placeholder="Một vài dòng về bạn...">${esc(u.bio||'')}</textarea></div><button class="btn btn-primary" style="width:100%;margin-top:18px">Lưu hồ sơ</button></form></div></div>`;const upload=$('#avatarUpload'),preview=$('#avatarPreview');upload.onchange=async()=>{const f=upload.files?.[0];if(!f)return;if(!f.type.startsWith('image/')){toast('Tệp đã chọn không phải ảnh.');upload.value='';return}if(f.size>8*1024*1024){toast('Ảnh vượt quá giới hạn 8 MB.');upload.value='';return}try{nextAvatar=await resizeImage(f);preview.innerHTML=`<img src="${esc(nextAvatar)}" alt="Ảnh đại diện xem trước">`}catch(err){upload.value='';toast(err.message||'Không thể đọc ảnh.')}};$('#removeAvatar').onclick=()=>{nextAvatar='';upload.value='';preview.textContent=u.username.slice(0,1).toUpperCase()};$('#profileForm').onsubmit=e=>{e.preventDefault();u.bio=$('#profileBio').value.trim();u.avatar=nextAvatar;persist();$('#modalRoot').innerHTML='';render();toast('Đã lưu ảnh đại diện và hồ sơ.');}; }
+
+  document.addEventListener('click',async e=>{
+    const target=e.target.closest('button,[data-page],[data-story],[data-open-chapter],[data-read-first],[data-category],[data-bookmark],[data-follow],[data-edit-story],[data-delete-story],[data-add-chapter],[data-submit-comment],[data-like-comment],[data-reply],[data-report],[data-open-story],[data-chapter-nav],[data-cover-choice],[data-remove-chapter],[data-switch-auth],[data-open-auth],[data-tab]'); if(!target)return;
+    if(target.hasAttribute('data-close-modal')){if(e.target===target||target.classList.contains('close-btn'))$('#modalRoot').innerHTML='';return}
+    if(target.dataset.page){go(target.dataset.page);return}
+    if(target.dataset.story){activeStory=target.dataset.story;page='story';render();window.scrollTo({top:0,behavior:'smooth'});return}
+    if(target.dataset.readFirst){const s=db.stories.find(x=>x.id===target.dataset.readFirst);if(s?.chapters[0])openChapter(s.id,s.chapters[0].id);else toast('Truyện chưa có chương.');return}
+    if(target.dataset.openChapter){openChapter(target.dataset.openChapter,target.dataset.chapter);return}
+    if(target.dataset.openStory){activeStory=target.dataset.openStory;go('story');return}
+    if(target.dataset.category){exploreFilter=target.dataset.category;go('explore');return}
+    if(target.dataset.bookmark){toggleBookmark(target.dataset.bookmark);return}
+    if(target.dataset.follow){toggleFollow(target.dataset.follow);return}
+    if(target.dataset.editStory){editorStory=target.dataset.editStory;go('write');return}
+    if(target.dataset.deleteStory){const id=target.dataset.deleteStory;confirmModal('Xóa câu chuyện?','Thao tác này sẽ xóa truyện và các chương của bạn khỏi bộ nhớ trên thiết bị.',()=>{db.stories=db.stories.filter(s=>s.id!==id);db.comments=db.comments.filter(c=>c.storyId!==id);db.bookmarks=db.bookmarks.filter(b=>b.storyId!==id);persist();activeStory=null;go('profile');toast('Đã xóa truyện.');},'Xóa truyện');return}
+    if(target.dataset.addChapter){editorStory=target.dataset.addChapter;go('write');return}
+    if(target.dataset.submitComment!==undefined){submitComment(target.dataset.submitComment,target.dataset.parent);return}
+    if(target.dataset.likeComment){toggleLike(target.dataset.likeComment);return}
+    if(target.dataset.reply){openReply(target.dataset.reply);return}
+    if(target.dataset.report){openReport(target.dataset.report);return}
+    if(target.dataset.chapterNav){const s=db.stories.find(x=>x.id===target.dataset.chapterNav);const i=Number(target.dataset.index);if(s?.chapters[i])openChapter(s.id,s.chapters[i].id);return}
+    if(target.dataset.coverChoice){selectedCover=Number(target.dataset.coverChoice);$$('[data-cover-choice]').forEach(b=>b.classList.toggle('selected',b===target));return}
+    if(target.dataset.removeChapter!==undefined){const f=$(`[data-chapter-field="${target.dataset.removeChapter}"]`);if(f)f.remove();$$('.chapter-field').forEach((el,i)=>{el.dataset.chapterField=i;el.querySelector('strong').textContent='Chương '+(i+1);el.querySelector('[data-remove-chapter]').dataset.removeChapter=i});return}
+    if(target.dataset.switchAuth){openAuth(target.dataset.switchAuth);return}
+    if(target.dataset.openAuth){openAuth(target.dataset.openAuth);return}
+    if(target.dataset.tab){$$('[data-tab]').forEach(b=>b.classList.toggle('active',b===target));const p=target.dataset.tab;let list=[];if(p==='saved')list=db.bookmarks.filter(b=>b.userKey===player().key).map(b=>db.stories.find(s=>s.id===b.storyId)).filter(Boolean);if(p==='history')list=db.history.filter(h=>h.userKey===player().key).slice(-30).reverse().map(h=>db.stories.find(s=>s.id===h.storyId)).filter(Boolean);if(p==='drafts')list=db.stories.filter(s=>s.authorId===currentUser()?.id&&!s.published);$('#libraryResults').innerHTML=list.length?list.map(storyCard).join(''):'<div class="empty" style="grid-column:1/-1">Chưa có nội dung trong mục này.</div>';return;}
+  });
+  document.addEventListener('submit',e=>{if(e.target.id==='authForm'){authSubmit(e);return}if(e.target.id==='storyForm'){createStoryForm(e,true);return}});
+  document.addEventListener('click',e=>{
+    if(e.target.id==='topWrite'){go('write');return} if(e.target.id==='topAvatar'||e.target.id==='sideProfile'){go('profile');return} if(e.target.id==='authNav'){if(currentUser())logout();else openAuth('login');return}
+    if(e.target.id==='addChapterField'){addChapterField();return} if(e.target.id==='cancelWrite'){window.pendingCover=undefined;go('profile');return} if(e.target.id==='saveDraft'){const form=$('#storyForm');if(form)createStoryForm({preventDefault(){},target:form},false);return}
+    if(e.target.id==='readerTheme'){const dark=document.documentElement.dataset.dark==='true';document.documentElement.dataset.dark=dark?'false':'true';document.documentElement.style.colorScheme=dark?'light':'dark';safeStore.set('mystory.theme.v1',dark?'light':'dark');$('#themeToggle').textContent=dark?'☾':'☀';return}
+    if(e.target.id==='lightMode'){document.documentElement.style.colorScheme='light';toast('Đã chọn Light Mode.');return}if(e.target.id==='darkMode'){document.documentElement.style.colorScheme='dark';toast('Đã chọn Dark Mode.');return}
+    if(e.target.id==='themeToggle'){const dark=document.documentElement.dataset.dark==='true';document.documentElement.dataset.dark=dark?'false':'true';document.documentElement.style.colorScheme=dark?'light':'dark';safeStore.set('mystory.theme.v1',dark?'light':'dark');e.target.textContent=dark?'☾':'☀';return}
+    if(e.target.id==='logoutBtn'){logout();return} if(e.target.id==='clearLocal'){confirmModal('Xóa toàn bộ dữ liệu?','Toàn bộ truyện, tài khoản, bình luận, ID khách và lịch sử trên trình duyệt này sẽ bị xóa. Việc này không thể hoàn tác.',()=>{localStorage.removeItem(KEY);localStorage.removeItem(SESSION);localStorage.removeItem(GUEST);location.reload();},'Xóa tất cả');return}
+    if(e.target.id==='editProfile'||e.target.closest('[data-edit-profile]')){editProfile();return}
+    if(e.target.dataset.font){readerFont=Math.max(14,Math.min(30,readerFont+Number(e.target.dataset.font)*2));const b=$('#readerBody');if(b)b.style.fontSize=readerFont+'px';return}
+  });
+  document.addEventListener('change',async e=>{
+    if(e.target.id==='chapterSelect'){const s=db.stories.find(x=>x.id===activeStory);if(s?.chapters[Number(e.target.value)])openChapter(s.id,s.chapters[Number(e.target.value)].id);return}
+    if(e.target.id==='sortFilter'){const sort=e.target.value;const list=$('#exploreResults');let arr=db.stories.filter(s=>s.published);const q=exploreQuery.trim().toLowerCase();if(q)arr=arr.filter(s=>(s.title+' '+s.authorName+' '+s.description+' '+s.tags.join(' ')).toLowerCase().includes(q));if(exploreFilter!=='All')arr=arr.filter(s=>s.category===exploreFilter);if(sort==='old')arr.sort((a,b)=>new Date(a.updatedAt)-new Date(b.updatedAt));else if(sort==='title')arr.sort((a,b)=>a.title.localeCompare(b.title));else arr.sort((a,b)=>new Date(b.updatedAt)-new Date(a.updatedAt));list.innerHTML=arr.map(storyCard).join('')||'<div class="empty" style="grid-column:1/-1">Không tìm thấy truyện phù hợp.</div>';return}
+    if(e.target.id==='categoryFilter'){exploreFilter=e.target.value;render();return}
+    if(e.target.id==='coverUpload'&&e.target.files[0]){try{window.pendingCover=await resizeImage(e.target.files[0]);toast('Đã tải ảnh bìa. Ảnh sẽ được lưu khi lưu truyện.')}catch(err){toast(err.message)}return}
+  });
+  let searchTimer; document.addEventListener('input',e=>{if(e.target.id==='exploreSearch'){exploreQuery=e.target.value;clearTimeout(searchTimer);searchTimer=setTimeout(()=>{const q=exploreQuery.trim().toLowerCase();const arr=db.stories.filter(s=>s.published).filter(s=>(!q||(s.title+' '+s.authorName+' '+s.description+' '+s.tags.join(' ')).toLowerCase().includes(q))&&(exploreFilter==='All'||s.category===exploreFilter));$('#exploreResults').innerHTML=arr.map(storyCard).join('')||'<div class="empty" style="grid-column:1/-1">Không tìm thấy truyện phù hợp.</div>'},150)}});
+  $('#globalSearch').addEventListener('keydown',e=>{if(e.key==='Enter'){exploreQuery=e.target.value;go('explore');}});
+  document.addEventListener('click',e=>{if(e.target.closest('[data-page="write"]')&&!currentUser())openAuth('login')});
+  if(safeStore.get('mystory.theme.v1')==='dark'){document.documentElement.style.colorScheme='dark';document.documentElement.dataset.dark='true';$('#themeToggle').textContent='☀'}
+  if(sessionId&&!db.users.some(u=>u.id===sessionId)){sessionId=null;safeStore.set(SESSION,'')}
+  render();
+})();
+</script>
+</body>
+</html>
